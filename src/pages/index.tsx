@@ -1,0 +1,34 @@
+import { Flex, Spinner, Text } from '@chakra-ui/react'
+import { DefaultButton } from '../components/DefaultButton'
+import { Logo } from '../components/Logo'
+import { useAuthContext } from '../components/context/AuthContext'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+
+export default function Home(){
+
+  const {login, user} = useAuthContext()
+  const router = useRouter()
+
+  useEffect(() => {
+    user && router.push("/todos")
+  }, [user])
+
+  return (
+    
+    <Flex direction="column" align="center" justify="center" h="100vh">
+      <Logo />
+
+      <DefaultButton
+      onClick={login}
+      >
+          {
+            user ?
+            <Spinner color="black"/>
+            :
+            <Text>Sign In With Google</Text>
+          }
+      </DefaultButton>
+    </Flex>
+  )
+}
