@@ -1,13 +1,9 @@
 import { Flex } from "@chakra-ui/react";
-import { Dispatch, SetStateAction } from "react";
-import { TodoProps } from "../types/todo";
+import { TodoProps } from "../types/TodoProps";
 
-interface TodoListProps{
-    todos: TodoProps[];
-    setTodos: Dispatch<SetStateAction<TodoProps[]>>
-}
+export function TodoList(){
 
-export function TodoList({todos, setTodos}: TodoListProps){
+    const todos:TodoProps[] = []
 
     const toggleTodo = (index: number) => {
         

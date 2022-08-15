@@ -1,3 +1,4 @@
+import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../../services/supabase";
@@ -5,14 +6,14 @@ import { supabase } from "../../services/supabase";
 interface AuthContextProps{
     login: () => Promise<void>;
     logout: (pushTo: string) => Promise<void>;
-    user: any
+    user: User | undefined | null;
 }
 
 export const AuthContext = createContext({} as AuthContextProps)
 
 export function AuthContextProvider({children}:{children: JSX.Element}){
 
-    const [user, setUser] = useState<any | null>(null)
+    const [user, setUser] = useState<User | undefined | null>(undefined)
     const router = useRouter()
 
     useEffect(() => {
