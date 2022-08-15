@@ -4,6 +4,7 @@ import { Logo } from '../components/Logo'
 import { useAuthContext } from '../components/context/AuthContext'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { supabase } from '../services/supabase'
 
 export default function Home(){
 
@@ -12,7 +13,7 @@ export default function Home(){
 
   useEffect(() => {
     user && router.push("/todos")
-  }, [user])
+  })
 
   return (
     
