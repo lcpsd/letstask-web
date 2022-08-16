@@ -1,5 +1,5 @@
 import { Flex, Icon, Input, Spinner } from "@chakra-ui/react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { DefaultButton } from "../components/DefaultButton";
 import { TodoProps } from "../types/TodoProps";
 import { TodoList } from "../components/TodoList";
@@ -15,6 +15,7 @@ export default function todos(){
     const [loading, setLoading] = useState(false)
     const {logout, user} = useAuthContext()
     const {fetchTodos} = useTodoContext()
+    const session = supabase.auth.session()
 
     const handleAddTodo = async () => {
 
@@ -41,6 +42,10 @@ export default function todos(){
 
         setLoading(false)
     }
+
+    useEffect(() => {
+        fetchTodos(session?.user?.id)
+    }, [session])
 
     return(
         <Flex direction="column" p={5} gap={5}>

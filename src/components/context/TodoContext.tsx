@@ -25,7 +25,17 @@ export function TodoContextProvider({children}:{children: JSX.Element}){
         .select('*')
         .eq('user_id', userId)
 
-        setTodos(data)
+        if(data){
+            const filterCompleteFalse = 
+            data?.filter(item => item.complete == false)
+            data?.sort((a,b) => b-a)
+
+            const filterCompleteTrue = 
+            data?.filter(item => item.complete == true)
+            data?.sort((a,b) => a-b)
+            
+            setTodos([...filterCompleteFalse, ...filterCompleteTrue])
+        }
     }
 
     const toggleTodo = async (todo: TodoProps) => {
