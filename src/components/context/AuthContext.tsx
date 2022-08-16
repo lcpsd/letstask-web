@@ -6,18 +6,18 @@ import { supabase } from "../../services/supabase";
 interface AuthContextProps{
     login: () => Promise<void>;
     logout: (pushTo: string) => Promise<void>;
-    user: User | undefined | null;
+    user: User | null;
 }
 
 export const AuthContext = createContext({} as AuthContextProps)
 
 export function AuthContextProvider({children}:{children: JSX.Element}){
 
-    const [user, setUser] = useState<User | undefined | null>(undefined)
+    const [user, setUser] = useState<User | null>({} as User)
     const router = useRouter()
 
     useEffect(() => {
-        supabase.auth.onAuthStateChange((event, session) => setUser(session?.user))
+        supabase.auth.onAuthStateChange((event, session) => session?.user && setUser(session?.user))
     },[])
 
     const login = async () => {

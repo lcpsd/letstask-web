@@ -4,43 +4,28 @@ import { useEffect, useState } from "react";
 import { supabase } from "../services/supabase";
 import { TodoProps } from "../types/TodoProps";
 import { useAuthContext } from "./context/AuthContext";
+import { useTodoContext } from "./context/TodoContext";
 
-interface TodoListProps{
-    todos: TodoProps[];
-    fetchTodos: () => Promise<void>;
-}
-
-export function TodoList({todos, fetchTodos}:TodoListProps){
+export function TodoList(){
 
     const router = useRouter()
 
     const {user} = useAuthContext()
-
-    const toggleTodo = async (todo: TodoProps) => {
-        try {
-            const {data, error} = await supabase
-            .from('todos')
-            .update({complete: !todo.complete})
-            .eq('uuid', todo.uuid)
-
-            fetchTodos()
-        } catch (error) {
-            return
-        }
-    }
+    const {todos, fetchTodos, toggleTodo} = useTodoContext()
+    const session = supabase.auth.session()
 
     useEffect(() => {
         !user && router.push("/")
     }, [user])
 
     useEffect(() => {
-        !todos.length && fetchTodos()
-    }, [])
+        fetchTodos(user?.id)
+    }, [user])
 
     return(
         <Flex direction="column" gap={5}>
             {
-                todos[0] ?
+                todos?.length ?
                 todos.map((todo: TodoProps) => (
                     <Flex 
                     onClick={() => toggleTodo(todo)} 

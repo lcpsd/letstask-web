@@ -3,4 +3,5 @@ export interface TodoProps{
     complete: boolean;
     text: string;
     uuid: string;
+    user_id: string;
 }
