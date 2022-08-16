@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { useTodoContext } from "../components/context/TodoContext";
 import Image from "next/image";
 import { Header } from "../components/Header";
+import { useRouter } from "next/router";
 
 export default function todos(){
 
@@ -18,6 +19,7 @@ export default function todos(){
     const {logout, user} = useAuthContext()
     const {fetchTodos} = useTodoContext()
     const session = supabase.auth.session()
+    const router = useRouter()
 
     const handleAddTodo = async () => {
 
@@ -47,6 +49,7 @@ export default function todos(){
 
     useEffect(() => {
         fetchTodos(session?.user?.id)
+        !session?.user && router.push("/")
     }, [session?.user])
 
     return(

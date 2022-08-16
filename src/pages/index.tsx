@@ -8,12 +8,13 @@ import { supabase } from '../services/supabase'
 
 export default function Home(){
 
-  const {login, user} = useAuthContext()
+  const {login} = useAuthContext()
+  const session = supabase.auth.session()
   const router = useRouter()
 
   useEffect(() => {
-    user && router.push("/todos")
-  })
+    session?.user && router.push("/todos")
+  }, [session?.user])
 
   return (
     
@@ -24,7 +25,7 @@ export default function Home(){
       onClick={login}
       >
           {
-            user ?
+            session?.user ?
             <Spinner color="black"/>
             :
             <Text>Sign In With Google</Text>

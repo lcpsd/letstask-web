@@ -10,15 +10,8 @@ import {IoClose} from "react-icons/io5"
 
 export function TodoList(){
 
-    const router = useRouter()
-
     const {user} = useAuthContext()
     const {todos, fetchTodos, toggleTodo, deleteTodo} = useTodoContext()
-    const session = supabase.auth.session()
-
-    useEffect(() => {
-        !user && router.push("/")
-    }, [user])
 
     useEffect(() => {
         fetchTodos(user?.id)
