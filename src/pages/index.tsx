@@ -12,7 +12,6 @@ export default function Home(){
   const router = useRouter()
 
   useEffect(() => {
-    console.log(user)
     user && router.push("/todos")
   })
 

@@ -6,12 +6,25 @@ import { TodoList } from "../components/TodoList";
 import { useAuthContext } from "../components/context/AuthContext";
 import {IoMdAdd} from "react-icons/io"
 import { supabase } from "../services/supabase";
+import { v4 as uuidv4 } from 'uuid'
 
 export default function todos(){
 
     const [newTodo, setNewTodo] = useState("")
     const [loading, setLoading] = useState(false)
     const {logout, user} = useAuthContext()
+    const [todos, setTodos] = useState<TodoProps[] | any>([])
+
+    async function fetchTodos(){
+        setLoading(true)
+        const { data } = await supabase
+        .from('todos')
+        .select('*')
+        .eq('user_id', user?.id)
+
+        setTodos(data)
+        setLoading(false)
+    }
 
     const handleAddTodo = async () => {
 
@@ -21,14 +34,20 @@ export default function todos(){
 
         setLoading(true)
 
+        const uuid = uuidv4()
+
         await supabase
         .from('todos')
         .insert([{
             text: newTodo,
             user_id: user?.id,
-            complete: false
+            complete: false,
+            uuid: uuid
         }])
+        .single()
         setNewTodo("")
+
+        fetchTodos()
 
         setLoading(false)
     }
@@ -67,7 +86,7 @@ export default function todos(){
                 </DefaultButton>
             </Flex>
 
-            <TodoList/>
+            <TodoList todos={todos} fetchTodos={fetchTodos}/>
         </Flex>
     )
 }
