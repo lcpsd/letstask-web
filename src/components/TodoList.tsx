@@ -1,4 +1,4 @@
-import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
+import { Box, Flex, Icon, Spinner, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { supabase } from "../services/supabase";
@@ -6,13 +6,14 @@ import { TodoProps } from "../types/TodoProps";
 import { useAuthContext } from "./context/AuthContext";
 import { useTodoContext } from "./context/TodoContext";
 import { NoTaskMessage } from "./NoTasksMessage";
+import {IoClose} from "react-icons/io5"
 
 export function TodoList(){
 
     const router = useRouter()
 
     const {user} = useAuthContext()
-    const {todos, fetchTodos, toggleTodo} = useTodoContext()
+    const {todos, fetchTodos, toggleTodo, deleteTodo} = useTodoContext()
     const session = supabase.auth.session()
 
     useEffect(() => {
@@ -32,6 +33,7 @@ export function TodoList(){
                     onClick={() => toggleTodo(todo)} 
                     key={todo.uuid}
                     justify="center"
+                    align="center"
                     fontSize="2xl"
                     border="1px"
                     borderColor="black"
@@ -43,8 +45,10 @@ export function TodoList(){
                     }}
                     opacity={todo.complete ? "0.3" : "1"}
                     transition="all 0.2s"
+                    pl={3}
                     >
-                        {todo.text}
+                        <Text flex="10">{todo.text}</Text>
+                        <Icon as={IoClose} flex="1" onClick={() => deleteTodo(todo.uuid, todo.user_id)}/>
                     </Flex>
                 ))
                 :

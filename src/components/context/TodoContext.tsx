@@ -5,6 +5,7 @@ import { TodoProps } from "../../types/TodoProps";
 interface TodoContextProps{
     fetchTodos: (userId: string | undefined) => void;
     toggleTodo: (todo: TodoProps) => void;
+    deleteTodo: (uuid: string | undefined, userId: string | undefined) => Promise<void>;
     todos: TodoProps[] | null;
 }
 
@@ -51,8 +52,26 @@ export function TodoContextProvider({children}:{children: JSX.Element}){
         }
     }
 
+    const deleteTodo = async (uuid: string | undefined, userId: string | undefined) => {
+
+        if(!uuid){
+            return
+        }
+
+        try {
+            const { data } = await supabase
+            .from('todos')
+            .delete()
+            .eq('uuid', uuid)
+
+            fetchTodos(userId)         
+        } catch (error) {
+            return
+        }
+    }
+
     return(
-        <TodoContext.Provider value={{fetchTodos, toggleTodo, todos}}>
+        <TodoContext.Provider value={{fetchTodos, toggleTodo, todos, deleteTodo}}>
             {children}
         </TodoContext.Provider>
     )
