@@ -18,7 +18,7 @@ export function AuthContextProvider({children}:{children: JSX.Element}){
     const session = supabase.auth.session()
 
     useEffect(() => {
-       setUser(session?.user)
+        supabase.auth.onAuthStateChange((event, session) => session?.user && setUser(session?.user))
     },[session])
 
     const login = async () => {
