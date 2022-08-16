@@ -1,4 +1,4 @@
-import { Flex, Icon, Input, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Icon, Img, Input, Spinner, Text } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { DefaultButton } from "../components/DefaultButton";
 import { TodoProps } from "../types/TodoProps";
@@ -8,6 +8,7 @@ import {IoMdAdd} from "react-icons/io"
 import { supabase } from "../services/supabase";
 import { v4 as uuidv4 } from 'uuid'
 import { useTodoContext } from "../components/context/TodoContext";
+import Image from "next/image";
 
 export default function todos(){
 
@@ -45,15 +46,27 @@ export default function todos(){
 
     useEffect(() => {
         fetchTodos(session?.user?.id)
-    }, [session])
+    }, [session?.user])
 
     return(
         <Flex direction="column" p={5} gap={5}>
-            <DefaultButton
-            onClick={() => logout("/")}
-            maxW="100px"
-            ml="auto"
-            >SignOut</DefaultButton>
+            <Flex align="center">
+                <Flex>
+                    <Img
+                    src={user?.user_metadata?.picture}
+                    rounded="full"
+                    border="2px"
+                    borderColor="black"
+                    h="80px"
+                    w="80px"
+                    />
+                </Flex>
+                <DefaultButton
+                onClick={() => logout("/")}
+                maxW="100px"
+                ml="auto"
+                >SignOut</DefaultButton>
+            </Flex>
             
             <Flex>
                 <Input
