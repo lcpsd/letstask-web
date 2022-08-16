@@ -1,14 +1,12 @@
-import { Box, Flex, Icon, Img, Input, Spinner, Text } from "@chakra-ui/react";
+import { Flex, Icon, Input, Spinner } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { DefaultButton } from "../components/DefaultButton";
-import { TodoProps } from "../types/TodoProps";
 import { TodoList } from "../components/TodoList";
 import { useAuthContext } from "../components/context/AuthContext";
 import {IoMdAdd} from "react-icons/io"
 import { supabase } from "../services/supabase";
 import { v4 as uuidv4 } from 'uuid'
 import { useTodoContext } from "../components/context/TodoContext";
-import Image from "next/image";
 import { Header } from "../components/Header";
 import { useRouter } from "next/router";
 
@@ -16,7 +14,7 @@ export default function todos(){
 
     const [newTodo, setNewTodo] = useState("")
     const [loading, setLoading] = useState(false)
-    const {logout, user} = useAuthContext()
+    const {user} = useAuthContext()
     const {fetchTodos} = useTodoContext()
     const session = supabase.auth.session()
     const router = useRouter()

@@ -8,13 +8,13 @@ import { supabase } from '../services/supabase'
 
 export default function Home(){
 
-  const {login} = useAuthContext()
+  const {user, login} = useAuthContext()
   const session = supabase.auth.session()
   const router = useRouter()
 
   useEffect(() => {
     session?.user && router.push("/todos")
-  }, [session?.user])
+  }, [session?.user, user])
 
   return (
     
