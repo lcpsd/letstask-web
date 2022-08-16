@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { useTodoContext } from "../components/context/TodoContext";
 import { Header } from "../components/Header";
 import { useRouter } from "next/router";
+import { ProtectedRoute } from "../components/ProtectedRoute";
 
 export default function todos(){
 
@@ -47,41 +48,42 @@ export default function todos(){
 
     useEffect(() => {
         fetchTodos(session?.user?.id)
-        !session?.user && router.push("/")
     }, [session?.user])
 
     return(
-        <Flex direction="column" p={5} gap={5}>
+        <ProtectedRoute>
+            <Flex direction="column" p={5} gap={5}>
             
-            <Header />
-            
-            <Flex>
-                <Input
-                borderColor="black"
-                value={newTodo}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    setNewTodo(e.target.value)
-                }}
-                borderRight="0"
-                borderRightRadius="0"
-                placeholder="What's next?"
-                _placeholder={{color:"gray"}}
-                />
-                <DefaultButton
-                borderLeftRadius="0"
-                fontSize="2xl"
-                onClick={handleAddTodo}
-                >
-                    {
-                        loading ?
-                        <Spinner color="black" />
-                        :
-                        <Icon as={IoMdAdd}/>
-                    }
-                </DefaultButton>
-            </Flex>
+                <Header />
+                
+                <Flex>
+                    <Input
+                    borderColor="black"
+                    value={newTodo}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        setNewTodo(e.target.value)
+                    }}
+                    borderRight="0"
+                    borderRightRadius="0"
+                    placeholder="What's next?"
+                    _placeholder={{color:"gray"}}
+                    />
+                    <DefaultButton
+                    borderLeftRadius="0"
+                    fontSize="2xl"
+                    onClick={handleAddTodo}
+                    >
+                        {
+                            loading ?
+                            <Spinner color="black" />
+                            :
+                            <Icon as={IoMdAdd}/>
+                        }
+                    </DefaultButton>
+                </Flex>
 
-            <TodoList />
-        </Flex>
+                <TodoList />
+            </Flex>
+        </ProtectedRoute>
     )
 }

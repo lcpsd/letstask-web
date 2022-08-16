@@ -16,9 +16,6 @@ export default function Home(){
       user?.email && router.push("/todos")
   }, [session?.user, user])
 
-  if(session){
-
-  }
   return (
     
     <Flex direction="column" align="center" justify="center" h="100vh">
