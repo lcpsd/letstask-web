@@ -9,6 +9,7 @@ import { supabase } from "../services/supabase";
 import { v4 as uuidv4 } from 'uuid'
 import { useTodoContext } from "../components/context/TodoContext";
 import Image from "next/image";
+import { Header } from "../components/Header";
 
 export default function todos(){
 
@@ -50,23 +51,8 @@ export default function todos(){
 
     return(
         <Flex direction="column" p={5} gap={5}>
-            <Flex align="center">
-                <Flex>
-                    <Img
-                    src={user?.user_metadata?.picture}
-                    rounded="full"
-                    border="2px"
-                    borderColor="black"
-                    h="80px"
-                    w="80px"
-                    />
-                </Flex>
-                <DefaultButton
-                onClick={() => logout("/")}
-                maxW="100px"
-                ml="auto"
-                >SignOut</DefaultButton>
-            </Flex>
+            
+            <Header />
             
             <Flex>
                 <Input
